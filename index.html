@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apuesta Presidencial 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8A96E;
+    --gold-light: #e8d5a3;
+    --gold-dim: #7a6040;
+    --bg: #080d18;
+    --bg2: #0d1525;
+    --bg3: #121d30;
+    --text: #e8d5a3;
+    --muted: #5a6a7a;
+    --green: #4a9a5a;
+    --red: #c05050;
+    --blue: #5080c0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(200,169,110,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(13,21,37,0.8) 0%, transparent 50%),
+      repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(200,169,110,0.01) 40px, rgba(200,169,110,0.01) 41px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 40px; }
+  .flag-wrap {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, rgba(200,169,110,0.15), rgba(200,169,110,0.05));
+    border: 1px solid rgba(200,169,110,0.3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 20px;
+    box-shadow: 0 0 40px rgba(200,169,110,0.1);
+  }
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 6vw, 38px);
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    text-shadow: 0 0 60px rgba(200,169,110,0.2);
+  }
+  .title-sub {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+  .divider {
+    width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 18px auto;
+  }
+
+  /* Cards */
+  .card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(200,169,110,0.15);
+    border-radius: 16px;
+    padding: 26px 22px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(8px);
+  }
+  .card-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  /* Player buttons */
+  .player-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 13px 18px;
+    margin-bottom: 9px;
+    background: rgba(200,169,110,0.06);
+    border: 1px solid rgba(200,169,110,0.18);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Crimson Pro', serif;
+    font-size: 17px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+  .player-btn:hover:not(:disabled) {
+    background: rgba(200,169,110,0.14);
+    border-color: rgba(200,169,110,0.4);
+    transform: translateX(3px);
+  }
+  .player-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .badge {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(74,154,90,0.2);
+    color: #7ec98e;
+    border: 1px solid rgba(74,154,90,0.3);
+    font-family: 'Crimson Pro', serif;
+  }
+  .badge-self {
+    background: rgba(200,169,110,0.2);
+    color: var(--gold);
+    border-color: rgba(200,169,110,0.4);
+  }
+
+  /* Progress */
+  .progress-wrap { margin-top: 18px; }
+  .progress-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .progress-bar { height: 3px; background: rgba(200,169,110,0.1); border-radius: 3px; overflow: hidden; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+    border-radius: 3px;
+    transition: width 0.6s ease;
+  }
+
+  /* Form inputs */
+  .field { margin-bottom: 20px; }
+  .field-label {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .field input {
+    width: 100%;
+    padding: 13px 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Crimson Pro', serif;
+    font-size: 20px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .field input:focus { border-color: rgba(200,169,110,0.6); }
+  .field input::placeholder { color: rgba(200,169,110,0.25); font-size: 15px; }
+
+  /* Buttons */
+  .btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #C8A96E, #9a7a40);
+    color: #0a0f1e;
+  }
+  .btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(200,169,110,0.2);
+    color: var(--muted);
+  }
+  .btn-ghost:hover { border-color: rgba(200,169,110,0.4); color: var(--text); }
+  .btn-danger {
+    background: rgba(140,30,30,0.3);
+    border: 1px solid rgba(200,60,60,0.3);
+    color: #e08080;
+  }
+
+  /* Waiting list */
+  .wait-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 16px;
+  }
+  .wait-done { color: var(--text); }
+  .wait-pending { color: var(--muted); font-style: italic; }
+  .dot-anim { display: inline-block; animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+  /* Reveal / Results */
+  .real-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 17px;
+  }
+  .real-num { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); }
+
+  .rank-card {
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.02);
+    margin-bottom: 12px;
+    transition: all 0.3s;
+  }
+  .rank-card.winner {
+    border-color: rgba(200,169,110,0.5);
+    background: rgba(200,169,110,0.08);
+    box-shadow: 0 0 30px rgba(200,169,110,0.1);
+  }
+  .rank-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .rank-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+  .rank-error { font-size: 12px; color: var(--muted); }
+  .pred-row { display: flex; justify-content: space-between; font-size: 14px; padding: 3px 0; color: #a0b0c0; }
+  .diff-pos { color: var(--red); }
+  .diff-neg { color: var(--blue); }
+  .diff-zero { color: var(--green); }
+
+  /* Admin panel */
+  .admin-notice {
+    padding: 12px 16px;
+    background: rgba(200,169,110,0.07);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed;
+    top: -20px;
+    animation: confetti-fall linear forwards;
+    z-index: 999;
+    pointer-events: none;
+  }
+  @keyframes confetti-fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Animations */
+  .fade-in { animation: fadeIn 0.4s ease forwards; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Reveal animation for rank cards */
+  .rank-card { opacity: 0; animation: revealCard 0.5s ease forwards; }
+  @keyframes revealCard { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active fade-in">
+    <div class="header">
+      <div class="flag-wrap">🇨🇴</div>
+      <div class="title">Apuesta<br>Presidencial</div>
+      <div class="divider"></div>
+      <div class="title-sub">Colombia 2026 · Primera vuelta</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">¿Quién eres?</div>
+      <div id="player-list"></div>
+      <div class="progress-wrap">
+        <div class="progress-info">
+          <span id="progress-text">0 de 6 han apostado</span>
+          <span id="all-in-msg" style="display:none;color:var(--gold)">¡Todos listos!</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div id="reveal-btn-wrap" style="display:none">
+      <button class="btn btn-primary" onclick="goReveal()">Ver resultados →</button>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div id="screen-form" class="screen fade-in">
+    <div class="header">
+      <div class="flag-wrap">✍️</div>
+      <div class="title" id="form-username"></div>
+      <div class="divider"></div>
+      <div class="title-sub">Tu predicción de votos</div>
+    </div>
+    <div class="card">
+      <div class="card-label">¿Cuántos votos saca cada candidato?</div>
+      <div class="field">
+        <div class="field-label">🕊️ Paloma</div>
+        <input type="number" id="v-paloma" placeholder="ej: 4.500.000" />
+      </div>
+      <div class="field">
+        <div class="field-label">🐯 El Tigre</div>
+        <input type="number" id="v-tigre" placeholder="ej: 3.200.000" />
+      </div>
+      <div class="field">
+        <div class="field-label">🎵 Cepeda</div>
+        <input type="number" id="v-cepeda" placeholder="ej: 2.800.000" />
+      </div>
+      <div class="admin-notice">🔒 Tu apuesta queda cifrada — nadie la ve hasta que todos hayan participado</div>
+      <button class="btn btn-primary" id="submit-btn" onclick="submitPrediction()" disabled>Confirmar apuesta →</button>
+      <button class="btn btn-ghost" onclick="goHome()">← Volver</button>
+    </div>
+  </div>
+
+  <!-- WAITING -->
+  <div id="screen-waiting" class="screen fade-in">
+    <div class="header">
+      <div class="flag-wrap">⏳</div>
+      <div class="title">Apuesta<br>guardada</div>
+      <div class="divider"></div>
+      <div class="title-sub">Esperando al resto del grupo</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Estado del grupo</div>
+      <div id="waiting-list"></div>
+      <div id="waiting-msg" style="margin-top:18px;font-size:14px;color:var(--muted);text-align:center"></div>
+      <button class="btn btn-ghost" style="margin-top:20px" onclick="refreshAndHome()">↺ Actualizar</button>
+    </div>
+  </div>
+
+  <!-- REVEAL -->
+  <div id="screen-reveal" class="screen fade-in">
+    <div class="header">
+      <div class="flag-wrap">🏆</div>
+      <div class="title">Resultados</div>
+      <div class="divider"></div>
+      <div id="winner-line" class="title-sub"></div>
+    </div>
+    <div class="card" id="real-votes-card" style="display:none">
+      <div class="card-label">Votos reales</div>
+      <div id="real-votes-list"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Ranking — menor error gana</div>
+      <div id="ranking-list"></div>
+    </div>
+    <button class="btn btn-ghost" onclick="goHome()" style="margin-top:8px">← Volver al inicio</button>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="screen-admin" class="screen fade-in">
+    <div class="header">
+      <div class="flag-wrap">🔐</div>
+      <div class="title">Admin</div>
+      <div class="divider"></div>
+      <div class="title-sub" id="admin-status-sub"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Estado del grupo</div>
+      <div id="admin-waiting-list"></div>
+      <div id="admin-pending-msg" style="margin-top:12px;font-size:13px;color:var(--muted)"></div>
+    </div>
+    <div class="card" id="admin-reveal-card">
+      <div class="card-label">Ingresar votos reales</div>
+      <div class="field">
+        <div class="field-label">🕊️ Paloma</div>
+        <input type="number" id="r-paloma" placeholder="Votos reales..." />
+      </div>
+      <div class="field">
+        <div class="field-label">🐯 El Tigre</div>
+        <input type="number" id="r-tigre" placeholder="Votos reales..." />
+      </div>
+      <div class="field">
+        <div class="field-label">🎵 Cepeda</div>
+        <input type="number" id="r-cepeda" placeholder="Votos reales..." />
+      </div>
+      <button class="btn btn-primary" id="reveal-btn" onclick="revealAll()" disabled>🔓 Revelar resultados</button>
+    </div>
+    <div class="card">
+      <div class="card-label">Peligro</div>
+      <button class="btn btn-danger" onclick="resetAll()">↺ Reiniciar toda la apuesta</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Confetti container -->
+<div id="confetti-container"></div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────
+const PARTICIPANTS = ["Güilliannnn","Aroca","Pipe","Cabellos","Araoss","Moron"];
+const CANDIDATES   = ["Paloma","El Tigre","Cepeda"];
+const EMOJIS       = { "Paloma":"🕊️", "El Tigre":"🐯", "Cepeda":"🎵" };
+const STORAGE_KEY  = "apuesta-col-2026-v2";
+const ADMIN_PARAM  = "moron2026"; // ?admin=moron2026
+
+// ── STATE ───────────────────────────────────────────
+let appData    = {};   // shared state
+let currentUser = null;
+let isAdmin    = false;
+
+// ── INIT ────────────────────────────────────────────
+window.addEventListener('load', async () => {
+  const params = new URLSearchParams(window.location.search);
+  isAdmin = params.get('admin') === ADMIN_PARAM;
+
+  await loadData();
+
+  if (isAdmin) {
+    showScreen('admin');
+    renderAdmin();
+    return;
+  }
+
+  // Check if this device already voted
+  const myVote = localStorage.getItem('apuesta-col-2026-user');
+  if (myVote && PARTICIPANTS.includes(myVote)) {
+    currentUser = myVote;
+  }
+
+  if (appData.revealed) {
+    showScreen('reveal');
+    renderReveal();
+  } else {
+    showScreen('home');
+    renderHome();
+  }
+});
+
+// ── STORAGE ─────────────────────────────────────────
+async function loadData() {
+  try {
+    const r = await window.storage.get(STORAGE_KEY, true);
+    appData = r && r.value ? JSON.parse(r.value) : {};
+  } catch(e) { appData = {}; }
+}
+
+async function saveData() {
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify(appData), true);
+  } catch(e) {}
+}
+
+// ── SCREENS ─────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('screen-' + id);
+  if (el) { el.classList.add('active'); el.classList.remove('fade-in'); void el.offsetWidth; el.classList.add('fade-in'); }
+}
+
+function goHome() { renderHome(); showScreen('home'); }
+
+async function refreshAndHome() {
+  await loadData();
+  renderHome();
+  showScreen('home');
+}
+
+// ── HOME ─────────────────────────────────────────────
+function renderHome() {
+  const preds = appData.predictions || {};
+  const submitted = Object.keys(preds);
+  const list = document.getElementById('player-list');
+  list.innerHTML = '';
+
+  PARTICIPANTS.forEach(p => {
+    const done = submitted.includes(p);
+    const isMe = (p === currentUser);
+    const btn = document.createElement('button');
+    btn.className = 'player-btn';
+    btn.disabled = done;
+    let badge = '';
+    if (done && isMe) badge = `<span class="badge badge-self">✓ Tú apostaste</span>`;
+    else if (done) badge = `<span class="badge">✓ Apostó</span>`;
+    btn.innerHTML = `<span>${p}</span>${badge}`;
+    if (!done) btn.onclick = () => startForm(p);
+    list.appendChild(btn);
+  });
+
+  const pct = Math.round((submitted.length / PARTICIPANTS.length) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${submitted.length} de ${PARTICIPANTS.length} han apostado`;
+
+  const allIn = submitted.length >= PARTICIPANTS.length;
+  document.getElementById('all-in-msg').style.display = allIn ? 'block' : 'none';
+  document.getElementById('reveal-btn-wrap').style.display = appData.revealed ? 'block' : 'none';
+}
+
+// ── FORM ─────────────────────────────────────────────
+function startForm(name) {
+  // Double-check device lock
+  const myVote = localStorage.getItem('apuesta-col-2026-user');
+  if (myVote && myVote !== name) {
+    alert(`Ya apostaste como ${myVote} desde este dispositivo.`);
+    return;
+  }
+  currentUser = name;
+  document.getElementById('form-username').textContent = name;
+  document.getElementById('v-paloma').value = '';
+  document.getElementById('v-tigre').value = '';
+  document.getElementById('v-cepeda').value = '';
+  checkFormValid();
+  ['v-paloma','v-tigre','v-cepeda'].forEach(id => {
+    document.getElementById(id).addEventListener('input', checkFormValid);
+  });
+  showScreen('form');
+}
+
+function checkFormValid() {
+  const p = document.getElementById('v-paloma').value;
+  const t = document.getElementById('v-tigre').value;
+  const c = document.getElementById('v-cepeda').value;
+  document.getElementById('submit-btn').disabled = !(p && t && c);
+}
+
+async function submitPrediction() {
+  const p = parseInt(document.getElementById('v-paloma').value);
+  const t = parseInt(document.getElementById('v-tigre').value);
+  const c = parseInt(document.getElementById('v-cepeda').value);
+  if (!p || !t || !c) return;
+
+  await loadData(); // refresh before writing
+  if (!appData.predictions) appData.predictions = {};
+  appData.predictions[currentUser] = { "Paloma": p, "El Tigre": t, "Cepeda": c };
+  await saveData();
+
+  // Lock this device
+  localStorage.setItem('apuesta-col-2026-user', currentUser);
+
+  renderWaiting();
+  showScreen('waiting');
+}
+
+// ── WAITING ───────────────────────────────────────────
+function renderWaiting() {
+  const preds = appData.predictions || {};
+  const submitted = Object.keys(preds);
+  const pending = PARTICIPANTS.filter(p => !submitted.includes(p));
+  const list = document.getElementById('waiting-list');
+  list.innerHTML = '';
+  PARTICIPANTS.forEach(p => {
+    const done = submitted.includes(p);
+    const div = document.createElement('div');
+    div.className = 'wait-item';
+    div.innerHTML = `
+      <span class="${done ? 'wait-done' : 'wait-pending'}">${p}</span>
+      <span style="font-size:13px;color:${done?'var(--green)':'var(--muted)'}">${done ? '✓ Listo' : '<span class="dot-anim">•••</span>'}</span>
+    `;
+    list.appendChild(div);
+  });
+  const msg = document.getElementById('waiting-msg');
+  if (pending.length === 0) {
+    msg.innerHTML = '✅ ¡Todos apostaron! Esperando que el admin revele los resultados.';
+    msg.style.color = 'var(--gold)';
+  } else {
+    msg.innerHTML = `Faltan ${pending.length}: <em>${pending.join(', ')}</em>`;
+  }
+}
+
+// ── REVEAL ────────────────────────────────────────────
+function renderReveal() {
+  const preds = appData.predictions || {};
+  const real  = appData.realVotes  || {};
+
+  // Real votes card
+  if (real.Paloma) {
+    document.getElementById('real-votes-card').style.display = 'block';
+    const rv = document.getElementById('real-votes-list');
+    rv.innerHTML = '';
+    CANDIDATES.forEach(c => {
+      rv.innerHTML += `
+        <div class="real-row">
+          <span>${EMOJIS[c]} ${c}</span>
+          <span class="real-num">${fmtV(real[c])}</span>
+        </div>`;
+    });
+  }
+
+  // Ranking
+  const ranked = Object.entries(preds).map(([name, p]) => ({
+    name,
+    total: CANDIDATES.reduce((s,c) => s + Math.abs((p[c]||0) - (real[c]||0)), 0),
+    preds: p
+  })).sort((a,b) => a.total - b.total);
+
+  const winner = ranked[0]?.name;
+  document.getElementById('winner-line').textContent = winner ? `👑 Ganador: ${winner}` : 'Resultados finales';
+
+  const rl = document.getElementById('ranking-list');
+  rl.innerHTML = '';
+  ranked.forEach((r, i) => {
+    const medal = i===0?'👑':i===1?'🥈':i===2?'🥉':`${i+1}.`;
+    let predsHTML = CANDIDATES.map(c => {
+      const diff = (r.preds[c]||0) - (real[c]||0);
+      const cls  = diff>0?'diff-pos':diff<0?'diff-neg':'diff-zero';
+      const sign = diff>0?'+':diff<0?'-':'=';
+      const abs  = Math.abs(diff);
+      return `<div class="pred-row">
+        <span>${EMOJIS[c]} ${c}</span>
+        <span>${fmtV(r.preds[c])} <span class="${cls}" style="font-size:12px;margin-left:6px">${sign}${fmtV(abs)}</span></span>
+      </div>`;
+    }).join('');
+
+    const card = document.createElement('div');
+    card.className = 'rank-card' + (i===0?' winner':'');
+    card.style.animationDelay = (i * 0.12) + 's';
+    card.innerHTML = `
+      <div class="rank-header">
+        <span class="rank-name">${medal} ${r.name}</span>
+        <span class="rank-error">Error total: ${fmtV(r.total)}</span>
+      </div>
+      ${predsHTML}`;
+    rl.appendChild(card);
+  });
+}
+
+function goReveal() { showScreen('reveal'); renderReveal(); }
+
+// ── ADMIN ─────────────────────────────────────────────
+function renderAdmin() {
+  const preds = appData.predictions || {};
+  const submitted = Object.keys(preds);
+  const pending = PARTICIPANTS.filter(p => !submitted.includes(p));
+  const allIn = submitted.length >= PARTICIPANTS.length;
+
+  document.getElementById('admin-status-sub').textContent =
+    allIn ? '✅ Todos apostaron — puedes revelar' : `${submitted.length} / ${PARTICIPANTS.length} apostaron`;
+
+  const list = document.getElementById('admin-waiting-list');
+  list.innerHTML = '';
+  PARTICIPANTS.forEach(p => {
+    const done = submitted.includes(p);
+    const div = document.createElement('div');
+    div.className = 'wait-item';
+    div.innerHTML = `
+      <span class="${done?'wait-done':'wait-pending'}">${p}</span>
+      <span style="color:${done?'var(--green)':'var(--muted)'};font-size:13px">${done?'✓ Apostó':'Pendiente'}</span>`;
+    list.appendChild(div);
+  });
+
+  document.getElementById('admin-pending-msg').textContent =
+    pending.length > 0 ? `Faltan: ${pending.join(', ')}` : '';
+
+  // Reveal button
+  const revBtn = document.getElementById('reveal-btn');
+  ['r-paloma','r-tigre','r-cepeda'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      const ok = allIn
+        && document.getElementById('r-paloma').value
+        && document.getElementById('r-tigre').value
+        && document.getElementById('r-cepeda').value;
+      revBtn.disabled = !ok;
+    });
+  });
+  revBtn.disabled = true;
+
+  if (appData.revealed) {
+    document.getElementById('admin-reveal-card').innerHTML =
+      '<div class="admin-notice">✅ Resultados ya revelados. Comparte el link sin <code>?admin=…</code> para que todos los vean.</div>';
+  }
+}
+
+async function revealAll() {
+  const rp = parseInt(document.getElementById('r-paloma').value);
+  const rt = parseInt(document.getElementById('r-tigre').value);
+  const rc = parseInt(document.getElementById('r-cepeda').value);
+  if (!rp||!rt||!rc) return;
+  await loadData();
+  appData.revealed  = true;
+  appData.realVotes = { "Paloma": rp, "El Tigre": rt, "Cepeda": rc };
+  await saveData();
+  launchConfetti();
+  setTimeout(() => { showScreen('reveal'); renderReveal(); }, 800);
+}
+
+async function resetAll() {
+  if (!confirm('¿Seguro? Se borra toda la apuesta.')) return;
+  appData = {};
+  await saveData();
+  localStorage.removeItem('apuesta-col-2026-user');
+  location.reload();
+}
+
+// ── UTILS ─────────────────────────────────────────────
+function fmtV(n) {
+  if (!n && n!==0) return '—';
+  n = parseInt(n);
+  if (isNaN(n)) return '—';
+  if (n>=1000000) return (n/1000000).toFixed(1).replace('.0','') + 'M';
+  if (n>=1000) return Math.round(n/1000) + 'K';
+  return n.toLocaleString('es-CO');
+}
+
+function launchConfetti() {
+  const colors = ['#C8A96E','#E8D5A3','#FFD700','#c04040','#2060a0','#20a050'];
+  const container = document.getElementById('confetti-container');
+  for (let i=0;i<60;i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    const size = 6 + Math.random()*10;
+    el.style.cssText = `
+      left:${Math.random()*100}vw;
+      width:${size}px; height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius:${Math.random()>.5?'50%':'2px'};
+      animation-duration:${2+Math.random()*2.5}s;
+      animation-delay:${Math.random()*1.5}s;
+    `;
+    container.appendChild(el);
+  }
+  setTimeout(() => container.innerHTML = '', 6000);
+}
+</script>
+</body>
+</html>
