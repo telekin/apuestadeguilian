@@ -73,125 +73,125 @@
       <!-- HOME -->
       <div id="s-home" class="screen active">
         <div class="header">
-          <div class="flag-wrap">CO</div>div>
-          <div class="title">Apuesta<br>Presidencial</div>div>
-          <div class="divider"></div>div>
-          <div class="subtitle">Colombia 2026 - Primera vuelta</div>div>
-        </div>div>
+          <div class="flag-wrap">CO</div>
+          <div class="title">Apuesta<br>Presidencial</div>
+          <div class="divider"></div>
+          <div class="subtitle">Colombia 2026 - Primera vuelta</div>
+        </div>
         <div class="card">
-          <div class="card-label">Selecciona tu nombre</div>div>
-          <div id="player-list"><div style="text-align:center;padding:20px;color:var(--muted)"><span class="spinner"></span>span>Cargando...</div>div></div>div>
+          <div class="card-label">Selecciona tu nombre</div>
+          <div id="player-list"><div style="text-align:center;padding:20px;color:var(--muted)"><span class="spinner"></span>Cargando...</div></div>
           <div class="prog-wrap">
             <div class="prog-info">
-              <span id="prog-text">Cargando...</span>span>
-              <span id="all-in-label" style="display:none;color:var(--gold)">Todos listos!</span>span>
-            </div>div>
-            <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div>div></div>div>
-          </div>div>
-        </div>div>
+              <span id="prog-text">Cargando...</span>
+              <span id="all-in-label" style="display:none;color:var(--gold)">Todos listos!</span>
+            </div>
+            <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+          </div>
+        </div>
         <div id="btn-ver-resultados" style="display:none">
-          <button class="btn btn-gold" onclick="showReveal()">Ver resultados</button>button>
-        </div>div>
-      </div>div>
+          <button class="btn btn-gold" onclick="showReveal()">Ver resultados</button>
+        </div>
+      </div>
 
       <!-- FORM -->
       <div id="s-form" class="screen">
         <div class="header">
-          <div class="flag-wrap">edit</div>div>
-          <div class="title" id="form-name"></div>div>
-          <div class="divider"></div>div>
-          <div class="subtitle">Tu prediccion de votos</div>div>
-        </div>div>
+          <div class="flag-wrap">edit</div>
+          <div class="title" id="form-name"></div>
+          <div class="divider"></div>
+          <div class="subtitle">Tu prediccion de votos</div>
+        </div>
         <div class="card">
-          <div class="card-label">Cuantos votos saca cada candidato?</div>div>
+          <div class="card-label">Cuantos votos saca cada candidato?</div>
           <div class="field">
-            <div class="field-label">El Tigre</div>div>
+            <div class="field-label">El Tigre</div>
             <input type="number" id="v-tigre" placeholder="ej: 3200000" oninput="checkForm()">
-          </div>div>
+          </div>
           <div class="field">
-            <div class="field-label">Cepeda</div>div>
+            <div class="field-label">Cepeda</div>
             <input type="number" id="v-cepeda" placeholder="ej: 2800000" oninput="checkForm()">
-          </div>div>
-          <div class="lock-notice">Tu apuesta queda oculta hasta que todos hayan participado</div>div>
-          <button class="btn btn-gold" id="btn-confirm" onclick="submitPrediction()" disabled>Confirmar apuesta</button>button>
-          <div id="form-error" class="error-msg" style="display:none"></div>div>
-          <button class="btn btn-ghost" onclick="goHome()">Volver</button>button>
-        </div>div>
-      </div>div>
+          </div>
+          <div class="lock-notice">Tu apuesta queda oculta hasta que todos hayan participado</div>
+          <button class="btn btn-gold" id="btn-confirm" onclick="submitPrediction()" disabled>Confirmar apuesta</button>
+          <div id="form-error" class="error-msg" style="display:none"></div>
+          <button class="btn btn-ghost" onclick="goHome()">Volver</button>
+        </div>
+      </div>
 
       <!-- SUCCESS -->
       <div id="s-success" class="screen">
         <div class="header">
-          <div class="success-icon">OK</div>div>
+          <div class="success-icon">OK</div>
           <div class="success-msg">
             <h2>Apuesta guardada!</h2>
           <p>Tu prediccion quedo registrada.<br>Cuando todos apuesten se revelan los resultados.</p>
-          </div>div>
-        </div>div>
+          </div>
+        </div>
       <div class="card">
-      <div class="card-label">Tu apuesta</div>div>
-      <div id="success-summary"></div>div>
-      </div>div>
+      <div class="card-label">Tu apuesta</div>
+      <div id="success-summary"></div>
+      </div>
       <div class="card">
-      <div class="card-label">Estado del grupo</div>div>
-      <div id="success-group"></div>div>
-      <div id="success-pending" style="margin-top:12px;font-size:14px;color:var(--muted);text-align:center"></div>div>
-      </div>div>
-      </div>div>
+      <div class="card-label">Estado del grupo</div>
+      <div id="success-group"></div>
+      <div id="success-pending" style="margin-top:12px;font-size:14px;color:var(--muted);text-align:center"></div>
+      </div>
+      </div>
     
     <!-- REVEAL -->
     <div id="s-reveal" class="screen">
     <div class="header">
-    <div class="flag-wrap">win</div>div>
-    <div class="title">Resultados</div>div>
-    <div class="divider"></div>div>
-    <div id="winner-line" class="subtitle"></div>div>
-    </div>div>
+    <div class="flag-wrap">win</div>
+    <div class="title">Resultados</div>
+    <div class="divider"></div>
+    <div id="winner-line" class="subtitle"></div>
+    </div>
     <div class="card" id="real-card" style="display:none">
-    <div class="card-label">Votos reales</div>div>
-    <div id="real-list"></div>div>
-    </div>div>
+    <div class="card-label">Votos reales</div>
+    <div id="real-list"></div>
+    </div>
     <div class="card">
-    <div class="card-label">Ranking - menor error gana</div>div>
-    <div id="rank-list"></div>div>
-    </div>div>
-    <button class="btn btn-ghost" onclick="goHome()" style="margin-top:8px">Volver al inicio</button>button>
-    </div>div>
+    <div class="card-label">Ranking - menor error gana</div>
+    <div id="rank-list"></div>
+    </div>
+    <button class="btn btn-ghost" onclick="goHome()" style="margin-top:8px">Volver al inicio</button>
+    </div>
     
     <!-- ADMIN -->
     <div id="s-admin" class="screen">
     <div class="header">
-    <div class="flag-wrap">adm</div>div>
-    <div class="title">Admin</div>div>
-    <div class="divider"></div>div>
-    <div id="admin-sub" class="subtitle"></div>div>
-    </div>div>
+    <div class="flag-wrap">adm</div>
+    <div class="title">Admin</div>
+    <div class="divider"></div>
+    <div id="admin-sub" class="subtitle"></div>
+    </div>
     <div class="card">
-    <div class="card-label">Estado del grupo</div>div>
-    <div id="admin-group"></div>div>
-    <div id="admin-pending" style="margin-top:10px;font-size:13px;color:var(--muted)"></div>div>
-    </div>div>
+    <div class="card-label">Estado del grupo</div>
+    <div id="admin-group"></div>
+    <div id="admin-pending" style="margin-top:10px;font-size:13px;color:var(--muted)"></div>
+    </div>
     <div class="card" id="admin-form-card">
-    <div class="card-label">Ingresar votos reales para revelar</div>div>
+    <div class="card-label">Ingresar votos reales para revelar</div>
     <div class="field">
-    <div class="field-label">El Tigre</div>div>
+    <div class="field-label">El Tigre</div>
     <input type="number" id="r-tigre" placeholder="Votos reales..." oninput="checkRevealBtn()">
-    </div>div>
+    </div>
     <div class="field">
-    <div class="field-label">Cepeda</div>div>
+    <div class="field-label">Cepeda</div>
     <input type="number" id="r-cepeda" placeholder="Votos reales..." oninput="checkRevealBtn()">
-    </div>div>
-    <button class="btn btn-gold" id="btn-reveal" onclick="revealAll()" disabled>Revelar resultados</button>button>
-    <div id="admin-error" class="error-msg" style="display:none"></div>div>
-    </div>div>
+    </div>
+    <button class="btn btn-gold" id="btn-reveal" onclick="revealAll()" disabled>Revelar resultados</button>
+    <div id="admin-error" class="error-msg" style="display:none"></div>
+    </div>
     <div class="card">
-    <div class="card-label">Peligro</div>div>
-    <button class="btn btn-danger" onclick="resetAll()">Reiniciar toda la apuesta</button>button>
-    </div>div>
-    </div>div>
+    <div class="card-label">Peligro</div>
+    <button class="btn btn-danger" onclick="resetAll()">Reiniciar toda la apuesta</button>
+    </div>
+    </div>
     
-    </div>div>
-  <div id="confetti-container"></div>div>
+    </div>
+  <div id="confetti-container"></div>
   
   <script>
     const PARTICIPANTS = ["Guilliannnn","Aroca","Pipe","Cabellos","Araoss","Moron","Migue"];
@@ -436,4 +436,4 @@
     }
   </script>
   </body>
-</html>html>
+</html>
